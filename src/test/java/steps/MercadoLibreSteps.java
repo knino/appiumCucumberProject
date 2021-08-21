@@ -2,10 +2,7 @@ package steps;
 
 import io.cucumber.java.en.*;
 import org.junit.Assert;
-import org.openqa.selenium.WebElement;
 import pages.MercadoLibre;
-
-import java.util.List;
 
 public class MercadoLibreSteps {
     MercadoLibre ML = new MercadoLibre();
