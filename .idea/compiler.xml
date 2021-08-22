@@ -9,6 +9,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="cucumberTest" />
         <module name="cucumberSeleniumMercadoLibre" />
+        <module name="AppiumCucumberProject" />
       </profile>
     </annotationProcessing>
   </component>

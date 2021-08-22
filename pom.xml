@@ -73,6 +73,12 @@
             <artifactId>maven-cucumber-reporting</artifactId>
             <version>5.5.4</version>
         </dependency>
+        <dependency>
+            <groupId>io.appium</groupId>
+            <artifactId>java-client</artifactId>
+            <version>7.5.1</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>

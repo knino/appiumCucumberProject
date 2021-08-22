@@ -1,81 +1,68 @@
 package pages;
 
-import org.junit.rules.ExpectedException;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.remote.DesiredCapabilities;
+import java.net.URL;
+import io.appium.java_client.AppiumDriver;
+import io.appium.java_client.MobileElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
-
-
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.concurrent.TimeUnit;
+import io.appium.java_client.android.Activity;
 
 public class BaseClass {
-    protected static WebDriver driver;
+    protected static AppiumDriver<MobileElement> _driver;
+    protected static DesiredCapabilities _caps;
+    protected static URL _url;
     private static WebDriverWait wait;
+    private static Activity activity;
 
     static {
-        System.setProperty("webdriver.chrome.driver", "C://Users//Knino//Documents//WebDriver//1//chromedriver.exe");
-        ChromeOptions chromeOptions = new ChromeOptions();
-        driver = new ChromeDriver(chromeOptions);
-        wait = new WebDriverWait(driver, 10);
-        driver.manage().window().maximize();
-    }
-
-    public BaseClass(WebDriver driver){
-        BaseClass.driver = driver;
-        wait = new WebDriverWait(driver, 10);
-    }
-
-    public static void navigateTo(String url){
-        driver.get(url);
-    }
-
-    public static void closeBrowser(){
-        driver.quit();
-    }
-
-    private WebElement find(String locator){
-        return wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(locator)));
-    }
-
-    private String getTextTitle(String locator){ return driver.getTitle(); }
-
-    public void clickElement(String locator){
-        find(locator).click();
-    }
-
-    public void sendKeys(String locator, String keys){
-        find(locator).sendKeys(keys);
-    }
-
-
-    public String textTitle(String locator){
-        return getTextTitle(locator);
-    }
-
-
-    public String getAtribute(String locator){
-       return find(locator).getAttribute("class");
-    }
-
-    public String validateUrl(){
-        driver.manage().timeouts().implicitlyWait(13, TimeUnit.SECONDS);
-        return driver.getCurrentUrl();
-    }
-
-    public void waitForPage(){
         try {
-            Thread.sleep(700);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+            DesiredCapabilities caps = new DesiredCapabilities();
+            caps.setCapability("platformName","Android");
+            caps.setCapability("platformVersion","11");
+            caps.setCapability("deviceName","apollo");
+            caps.setCapability("automationName","UiAutomator2");
+            caps.setCapability("appPackage","com.google.android.gm");
+            caps.setCapability("appActivity","com.google.android.gm.ConversationListActivityGmail");
+            URL url = new URL("http://127.0.0.1:4723/wd/hub");
+            _caps = caps;
+            _url = url;
+            AppiumDriver<MobileElement> driver = new AppiumDriver<MobileElement>(_url, _caps);
+            _driver = driver;
+            wait = new WebDriverWait(driver, 10);
+        } catch (Exception e) {
+            System.out.println("causado por: "+ e.getCause());
+            System.out.println("Mensaje: " + e.getMessage());
         }
     }
 
+
+    public BaseClass(AppiumDriver<MobileElement> driver){
+        BaseClass._driver = _driver;
+        }
+
+    public WebElement find(String locator){
+        return wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(locator)));
     }
 
+    public WebElement findById(String locator){
+        return wait.until(ExpectedConditions.visibilityOfElementLocated(By.id(locator)));
+    }
+
+    public void clickElementByXpath(String locator){
+        find(locator).click();
+    }
+
+    public void clickElementById(String locator){
+        findById(locator).click();
+    }
+
+    public boolean checkEnableId(String locator){
+        return findById(locator).isEnabled();
+    }
+    public boolean checkEnableXpath(String locator){
+        return find(locator).isEnabled();
+    }
+    }
